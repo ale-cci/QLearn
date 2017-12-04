@@ -1,4 +1,4 @@
-import queens as game
+import PROBLEMS.queens as game
 import random
 
 # Defining normal functions
