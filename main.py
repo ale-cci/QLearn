@@ -1,4 +1,4 @@
-import labirinth as game
+import queens as game
 import random
 
 # Defining normal functions
@@ -19,7 +19,11 @@ Q = {}
 Q[str(game.initial_status)] = default_choices
 alpha = 0.2	# learning rate
 gamma = 0.8 # holding rate
-GAMES = 100
+
+try:
+	GAMES = game.nof_attempt
+except:
+	GAMES = 100
 
 for _ in range(GAMES):
 	status = game.initial_status
