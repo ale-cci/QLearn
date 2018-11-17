@@ -13,7 +13,7 @@ def get_reward(game):
 
 Q = {} # Policy
 
-λ = 0.2	# learning rate
+λ = 0.2 # learning rate
 γ = 0.8 # holding rate
 
 game = Game()
@@ -33,8 +33,7 @@ for iteration in range(ATTEMPTS):
         # Taking maximum rewarding action
         status = game.encoded_status()
         actions = game.get_actions()
-        maxes = np.argwhere(Q[status] == np.amax(Q[status])).flatten()
-        idx = np.random.choice(maxes)
+        idx = np.random.choice(np.argwhere(Q[status] == np.amax(Q[status])).flatten())
 
         # Executing the maximum rewarding action
         game.do_action(actions[idx])
