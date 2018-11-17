@@ -1,31 +1,48 @@
-# Game Rules:
+from PROBLEMS.game import GameInterface
+from collections import namedtuple
 
-nof_attempt = 19000
+Coord = namedtuple('Coord', ('x', 'y'))
 
-possible_actions = [0, 1, 2, 3, 4, 5, 6, 7]	# place on the X row
-initial_status = []	# no queen placed
+def conflict(queen1, queen2):
+    if queen1.x == queen2.x or queen1.y == queen2.y:
+        # Same - or |
+        return True
 
-def _conflict(q1, q2):
-	if q1[0] == q2[0]:	# same X coord
-		return True
-	if q1[1] == q2[1]:	# same Y coord
-		return True
-	if q1[0] + q1[1] == q2[0] + q2[1]: # same / diagonal
-		return True
-	if q1[0] - q1[1] == q2[0] - q2[1]: # same \ diagonal
-		return True
+    if queen1.x + queen1.y == queen2.x + queen2.y:
+        # Same / diagonal
+        return True
 
-def won(status):
-	return (len(status) == 8) and not lost(status)
+    if queen1.x - queen1.y == queen2.x - queen2.y:
+        # Same \ diagonal
+        return True
+    return False
 
-def lost(status):
-	for i, q1 in enumerate(status):
-		for q2 in status[i +1:]:
-			if _conflict(q1, q2):
-				return True
-	return False
 
-def next_status(status, action):
-	tmp = status[:]
-	tmp.append(((action), len(tmp)))
-	return tmp
+class Game(GameInterface):
+    def __init__(self):
+        # NOTE: this game is very hard to learn attempts should be ~ 3*10^4
+        self.attempts = 333*(10**4)
+
+    def reset(self):
+        self.status = []
+        self.possible_actions = [0, 1, 2, 3, 4, 5, 6, 7]
+
+    def lost(self):
+        for q1x, q1y in enumerate(self.status):
+            for q2d, q2y in enumerate(self.status[q1x+1:]):
+                q2x = q1x + q2d +1
+                if conflict(Coord(q1x, q1y), Coord(q2x, q2y)):
+                    return True
+        return False
+
+    def won(self):
+        return len(self.status) == 8 and not self.lost()
+
+    def get_actions(self):
+        return self.possible_actions
+
+    def do_action(self, column):
+        self.status.append(column)
+
+    def encoded_status(self):
+        return str(self.status)

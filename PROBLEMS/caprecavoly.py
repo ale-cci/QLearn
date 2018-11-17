@@ -1,19 +1,31 @@
-# Game Rules:
+"""
+    Implementation of the game: 'Fox, goose and bag of beans', aka Capra e Cavoli
+    Game rules could be found here: https://en.wikipedia.org/wiki/Fox,_goose_and_bag_of_beans_puzzle
+"""
+from PROBLEMS.game import GameInterface
 
-possible_actions = [0, 1, 2, 3]	# move farmer, cavolo, sheep or wolf
-initial_status = [False] * 4
+class Game(GameInterface):
+    def reset(self):
+        self.status = [False]*4
+        self.actions = [0, 1, 2, 3]
 
-	
-def won(status):
-	return not (False in status)
+    def won(self):
+        return not (False in self.status)
 
-def lost(status):
-	tmp = [s != status[0] for s in status]
-	return tmp[2] and (tmp[1] or tmp[3])
+    def lost(self):
+        tmp = [s != self.status[0] for s in self.status]
+        return tmp[2] and (tmp[1] or tmp[3])
 
-def next_status(status, action):
-	tmp = status[:]
-	tmp[0] = not tmp[0]
-	if action != 0:
-		tmp[action] = not tmp[action]
-	return tmp
+    def do_action(self, action):
+        # farmer changes river side
+        self.status[0] = not self.status[0]
+
+        # Other thing changes river side
+        if action != 0:
+            self.status[action] = not self.status[action]
+
+    def get_actions(self):
+        return self.actions
+
+    def encoded_status(self):
+        return ''.join(['L' if t else 'R' for t in self.status])

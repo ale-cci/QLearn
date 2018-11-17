@@ -1,48 +1,52 @@
-import PROBLEMS.queens as game
+# Implementation of the Q-Learning Algorithm
+from PROBLEMS.queens import  Game
+import numpy as np
 import random
 
-# Defining normal functions
-def finished(status):
-	return game.won(status) or game.lost(status)
+def get_reward(game):
+    """ Score for the current game status """
+    if game.won():
+        return 1
+    if game.lost():
+        return -1
+    return -0.2 # negative for finding the fastest solution
 
-def get_reward(status):
-	if game.won(status):
-		return 1
-	if game.lost(status):
-		return -1
-	return -0.2
+Q = {} # Policy
 
-nof_actions = len(game.possible_actions)
-default_choices = [0] * nof_actions
+λ = 0.2	# learning rate
+γ = 0.8 # holding rate
 
-Q = {}
-Q[str(game.initial_status)] = default_choices
-alpha = 0.2	# learning rate
-gamma = 0.8 # holding rate
+game = Game()
+ATTEMPTS = getattr(game, 'attempts', 100)
 
-try:
-	GAMES = game.nof_attempt
-except:
-	GAMES = 100
+for iteration in range(ATTEMPTS):
+    game.reset()
 
-for _ in range(GAMES):
-	status = game.initial_status
-	iterations = 0
+    if iteration == 0:
+        # Setting default policy for the starting status
+        Q[game.encoded_status()] = np.zeros(len(game.get_actions()))
 
-	while not finished(status):
-		iterations += 1
-		max_value = max(Q[str(status)])
-		action = random.choice([i for i, j in enumerate(Q[str(status)]) if j == max_value])	# retrieve the most rewarding action
+    steps = 0
+    while not (game.won() or game.lost()):
+        steps += 1
 
-		# do the best move
-		last_status = status
-		status = game.next_status(action=action, status=status)
-		reward = get_reward(status);
+        # Taking maximum rewarding action
+        status = game.encoded_status()
+        actions = game.get_actions()
+        maxes = np.argwhere(Q[status] == np.amax(Q[status])).flatten()
+        idx = np.random.choice(maxes)
 
-		Q.setdefault(str(status), default_choices[:])
-		Q[str(last_status)][action] += alpha * (reward + gamma*max(Q[str(status)]) - Q[str(last_status)][action])
+        # Executing the maximum rewarding action
+        game.do_action(actions[idx])
+        reward = get_reward(game)
 
-	if game.won(status):
-		print ("won in ", iterations)
-	else:
-		print ("Lost in ", iterations) 
+        # Updating last performed action policy
+        new_status = game.encoded_status()
+        Q.setdefault(new_status, np.ones(len(actions))/len(actions))
+        Q[status][idx] += λ*(reward + γ*(np.max(Q[new_status])-Q[status][idx]))
+
+
+    if game.won():
+        print ("Won in ", steps)
+    else:
+        print ("Lost in ", steps)
