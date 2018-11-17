@@ -1,4 +1,4 @@
-from PROBLEMS.game import GameInterface
+from PROBLEMS.gameinterface import GameInterface
 from collections import namedtuple
 
 Coord = namedtuple('Coord', ('x', 'y'))
@@ -22,10 +22,10 @@ class Game(GameInterface):
     def __init__(self):
         # NOTE: this game is very hard to learn attempts should be ~ 3*10^4
         self.attempts = 333*(10**4)
+        self.possible_actions = [0, 1, 2, 3, 4, 5, 6, 7]
 
     def reset(self):
         self.status = []
-        self.possible_actions = [0, 1, 2, 3, 4, 5, 6, 7]
 
     def lost(self):
         for q1x, q1y in enumerate(self.status):
@@ -44,5 +44,5 @@ class Game(GameInterface):
     def do_action(self, column):
         self.status.append(column)
 
-    def encoded_status(self):
+    def get_status(self):
         return str(self.status)

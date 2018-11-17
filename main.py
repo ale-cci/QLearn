@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# Implementation of the Q-Learning Algorithm
-from PROBLEMS.queens import  Game
+
+from PROBLEMS.caprecavoly import  Game
 import numpy as np
 import random
 
@@ -20,20 +20,22 @@ Q = {} # Policy
 game = Game()
 ATTEMPTS = getattr(game, 'attempts', 100)
 
+# List of possible actions
+actions = game.get_actions()
+
 for iteration in range(ATTEMPTS):
     game.reset()
 
     if iteration == 0:
         # Setting default policy for the starting status
-        Q[game.encoded_status()] = np.zeros(len(game.get_actions()))
+        Q[game.get_status()] = np.zeros(len(actions))
 
     steps = 0
     while not (game.won() or game.lost()):
         steps += 1
 
-        # Taking maximum rewarding action
-        status = game.encoded_status()
-        actions = game.get_actions()
+        # Taking index of the maximum rewarding action
+        status = game.get_status()
         idx = np.random.choice(np.argwhere(Q[status] == np.amax(Q[status])).flatten())
 
         # Executing the maximum rewarding action
@@ -41,7 +43,7 @@ for iteration in range(ATTEMPTS):
         reward = get_reward(game)
 
         # Updating last performed action policy
-        new_status = game.encoded_status()
+        new_status = game.get_status()
         Q.setdefault(new_status, np.ones(len(actions))/len(actions))
         Q[status][idx] += λ*(reward + γ*(np.max(Q[new_status])-Q[status][idx]))
 

@@ -2,12 +2,14 @@
     Implementation of the game: 'Fox, goose and bag of beans', aka Capra e Cavoli
     Game rules could be found here: https://en.wikipedia.org/wiki/Fox,_goose_and_bag_of_beans_puzzle
 """
-from PROBLEMS.game import GameInterface
+from PROBLEMS.gameinterface import GameInterface
 
 class Game(GameInterface):
+    def __init__(self):
+        self.actions = [0, 1, 2, 3]
+
     def reset(self):
         self.status = [False]*4
-        self.actions = [0, 1, 2, 3]
 
     def won(self):
         return not (False in self.status)
@@ -27,5 +29,5 @@ class Game(GameInterface):
     def get_actions(self):
         return self.actions
 
-    def encoded_status(self):
+    def get_status(self):
         return ''.join(['L' if t else 'R' for t in self.status])

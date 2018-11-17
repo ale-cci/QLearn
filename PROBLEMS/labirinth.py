@@ -1,4 +1,4 @@
-from PROBLEMS.game import GameInterface
+from PROBLEMS.gameinterface import GameInterface
 from collections import namedtuple
 
 def bound(value, minimum, maximum):
@@ -37,5 +37,5 @@ class Game(GameInterface):
     def get_actions(self) -> list:
         return self.actions
 
-    def encoded_status(self):
+    def get_status(self):
         return str(self._position)

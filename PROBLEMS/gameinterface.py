@@ -23,6 +23,6 @@ class GameInterface:
     def draw(self) -> None:
         pass
     
-    def encoded_status(self):
+    def get_status(self):
         """ Returns an unique codification of the current game status """
         raise NotImplementedError()
