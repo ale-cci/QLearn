@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Implementation of the Q-Learning Algorithm
 from PROBLEMS.queens import  Game
 import numpy as np
