@@ -21,7 +21,7 @@ def conflict(queen1, queen2):
 class Game(GameInterface):
     def __init__(self):
         # NOTE: this game is very hard to learn attempts should be ~ 3*10^4
-        self.attempts = 333*(10**4)
+        self.attempts = 3*(10**4)
         self.possible_actions = [0, 1, 2, 3, 4, 5, 6, 7]
 
     def reset(self):
