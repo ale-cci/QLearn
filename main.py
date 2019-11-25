@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from PROBLEMS.labirinth import  Game
+from problems.labirinth import Game
 from q_model import Policy
 import numpy as np
 import random
 
 def get_reward(game):
-    """ Score for the current game status """
+    """ Score for the current game state """
     if game.won():
         return 1
     if game.lost():
@@ -29,8 +29,8 @@ for iteration in range(ATTEMPTS):
         steps += 1
 
         # Taking index of the maximum rewarding action
-        status = game.get_status()
-        idx = policy.get_action_id(status)
+        state = game.get_state()
+        idx = policy.get_action_id(state)
 
 
         # Executing the maximum rewarding action
@@ -38,8 +38,8 @@ for iteration in range(ATTEMPTS):
         reward = get_reward(game)
 
         # Updating last performed action policy
-        new_status = game.get_status()
-        policy.update(status, new_status, idx, reward)
+        new_state = game.get_state()
+        policy.update(state, new_state, idx, reward)
 
 
     if game.won():

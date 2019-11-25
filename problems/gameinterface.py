@@ -9,7 +9,7 @@ class GameInterface:
         raise NotImplementedError()
 
     def lost(self) -> bool:
-        """ Returns True if the player has lost in the given game status """
+        """ Returns True if the player has lost in the given game state """
         raise NotImplementedError()
 
     def do_action(self, encoded_action) -> None:
@@ -22,7 +22,7 @@ class GameInterface:
 
     def draw(self) -> None:
         pass
-    
-    def get_status(self):
-        """ Returns an unique codification of the current game status """
+
+    def get_state(self):
+        """ Returns an unique codification of the current game state """
         raise NotImplementedError()
