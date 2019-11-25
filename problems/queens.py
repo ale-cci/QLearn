@@ -1,5 +1,5 @@
-from .gameinterface import GameInterface
 from collections import namedtuple
+from .gameinterface import GameInterface
 
 Coord = namedtuple('Coord', ('x', 'y'))
 

@@ -20,7 +20,7 @@ def main():
 
     policy = Policy(len(actions))
 
-    for iteration in range(game.attempts):
+    for _ in range(game.attempts):
         game.reset()
 
         steps = 0

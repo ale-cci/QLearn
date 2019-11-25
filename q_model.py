@@ -16,8 +16,8 @@ class Policy:
 
 
         self._policy[state][action] += self.learning_rate * (
-                reward + self.discount_factor * (next_reward - current_reward)
-            )
+            reward + self.discount_factor * (next_reward - current_reward)
+        )
 
     def highest_reward(self, state):
         '''Estimate the highest reward available for the current state'''
@@ -27,7 +27,7 @@ class Policy:
     def get_action_id(self, state):
         max_reward = self.highest_reward(state)
         action_id = np.random.choice(
-                np.argwhere(self._policy[state] == max_reward).flatten()
-                )
+            np.argwhere(self._policy[state] == max_reward).flatten()
+        )
 
         return action_id

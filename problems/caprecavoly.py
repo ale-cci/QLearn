@@ -4,9 +4,9 @@ Game rules could be found here: https://en.wikipedia.org/wiki/Fox,_goose_and_bag
 '''
 
 from .gameinterface import GameInterface
-from enum import Enum
+import enum
 
-class Item(Enum):
+class Item(enum.Enum):
     farmer = 0
     beans = 1
     goose = 2
@@ -14,20 +14,22 @@ class Item(Enum):
 
 class Game(GameInterface):
     def __init__(self):
-        self.actions = [ item for item in Item ]
+        self.actions = list(Item)
 
     def reset(self):
-        self.state = { item:False for item in Item }
+        '''Set all items in the same side of the river'''
+        self.state = {item:False for item in Item}
 
     def won(self):
-        return all([side for side in self.state.values()])
+        '''Returns true only if all the items are on the right (True) side of the river'''
+        return all(self.state.values())
 
     def lost(self):
         farmer_side = self.state[Item.farmer]
         opp_side = [item for item, side in self.state.items() if side != farmer_side]
 
         collision = (
-                (Item.goose in opp_side and Item.beans in opp_side)
+            (Item.goose in opp_side and Item.beans in opp_side)
             or
             (Item.goose in opp_side and Item.fox in opp_side)
         )
@@ -45,4 +47,9 @@ class Game(GameInterface):
         return self.actions
 
     def get_state(self):
-        return ''.join(['L' if t else 'R' for t in self.state.values()])
+        '''String representation for the current state
+
+        L if the item is on the left side of the river
+        R if the item is on the right side of the river
+        '''
+        return ''.join(['R' if t else 'L' for t in self.state.values()])

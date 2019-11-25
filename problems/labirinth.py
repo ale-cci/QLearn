@@ -1,9 +1,10 @@
-from .gameinterface import GameInterface
 from collections import namedtuple
+from .gameinterface import GameInterface
 
 Coordinate = namedtuple('Coordinate', ('x', 'y'))
 
 def bound(value, low, high):
+    '''Bound value between low and high values'''
     return min(max(low, value), high)
 
 class Game(GameInterface):
@@ -25,15 +26,17 @@ class Game(GameInterface):
         self._position = Coordinate(0, 0)
 
     def do_action(self, action):
-        x, y = self._position
+        '''Update player coordinates based on the action taken'''
+        pos_x, pos_y = self._position
 
         self._position = Coordinate(
-                bound(x + action.x, low=0, high=self.board.x),
-                bound(y + action.y, low=0, high=self.board.y)
-                )
+            bound(pos_x + action.x, low=0, high=self.board.x),
+            bound(pos_y + action.y, low=0, high=self.board.y)
+        )
 
 
     def lost(self):
+        '''Lose the game if agent hits an obstacle'''
         return self._position in self._hidden_obstacles
 
     def won(self):
