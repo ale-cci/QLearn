@@ -1,5 +1,7 @@
 
 class GameInterface:
+    attempts = 100
+
     def reset(self):
         """ When called the game should be resetted at the initial condition """
         raise NotImplementedError()
