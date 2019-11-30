@@ -60,10 +60,10 @@ class Game(GameInterface):
 
     def draw(self):
         print(
-                [item.value if not self.state[item] else '  ' for item in Item],
-                '~',
-                [item.value if self.state[item] else '  ' for item in Item]
-            )
+            [item.value if not self.state[item] else '  ' for item in Item],
+            '~',
+            [item.value if self.state[item] else '  ' for item in Item]
+        )
 
 
     def get_state(self):
