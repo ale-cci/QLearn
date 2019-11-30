@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-
-from problems.labirinth import Game
 from q_model import Policy
 
-def get_reward(game):
+def _get_reward(game):
     ''' Score for the current game state '''
     if game.won():
         return 1
@@ -14,13 +12,18 @@ def get_reward(game):
     return -0.2
 
 
-def main():
-    game = Game()
-    actions = game.get_actions()
+def solve(game: Game, attempts: int = 0):
+    '''
+    Try to solve the game in a predefined number of steps
 
+    If attempts is 0, game.attempts is used instead
+    '''
+    actions = game.get_actions()
     policy = Policy(len(actions))
 
-    for _ in range(game.attempts):
+    attempts = attempts or game.attempts
+
+    for _ in range(attempts):
         game.reset()
 
         steps = 0
@@ -33,7 +36,7 @@ def main():
 
             # Execute the highest rewarding action
             game.do_action(actions[idx])
-            reward = get_reward(game)
+            reward = _get_reward(game)
 
             # Update the policy of the last action performed
             new_state = game.get_state()
@@ -49,4 +52,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    from problems.labirinth import Game
+
+    solve(Game())
