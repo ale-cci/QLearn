@@ -58,6 +58,14 @@ class Game(GameInterface):
     def get_actions(self):
         return self.actions
 
+    def draw(self):
+        print(
+                [item.value if not self.state[item] else '  ' for item in Item],
+                '~',
+                [item.value if self.state[item] else '  ' for item in Item]
+            )
+
+
     def get_state(self):
         '''String representation for the current state
 

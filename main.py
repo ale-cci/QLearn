@@ -12,7 +12,7 @@ def _get_reward(game):
     return -0.2
 
 
-def solve(game: Game, attempts: int = 0):
+def solve(game, attempts: int = 0):
     '''
     Try to solve the game in a predefined number of steps
 
@@ -25,6 +25,7 @@ def solve(game: Game, attempts: int = 0):
 
     for _ in range(attempts):
         game.reset()
+        game.draw()
 
         steps = 0
         while not (game.won() or game.lost()):
@@ -42,7 +43,7 @@ def solve(game: Game, attempts: int = 0):
             new_state = game.get_state()
             policy.update(state, new_state, idx, reward)
 
-            # game.draw()
+            game.draw()
 
 
         if game.won():
@@ -52,6 +53,5 @@ def solve(game: Game, attempts: int = 0):
 
 
 if __name__ == '__main__':
-    from problems.labirinth import Game
-
+    from problems.caprecavoly import Game
     solve(Game())
