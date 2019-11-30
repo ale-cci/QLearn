@@ -4,7 +4,7 @@ Trivial labirinth puzzle
 from collections import namedtuple
 from problems.gameinterface import GameInterface
 
-Coordinate = namedtuple('Coordinate', ('x', 'y'))
+Coord = namedtuple('Coord', ('x', 'y'))
 
 def bound(value, low, high):
     '''Bound value between low and high values'''
@@ -15,7 +15,7 @@ class Game(GameInterface):
     The Labirinth puzzle
 
     :board: is the size of the labirinth
-    :_hidden_obstacles: is a list of Coordinates.
+    :_hidden_obstacles: is a list of Coords.
         If the player touches an obstacle, the game is considered lost
     :actions: single step in a direction (North, South, West, East)
     :_goal: coordinate that the player should reach to win the game
@@ -43,22 +43,22 @@ class Game(GameInterface):
 
         '''
         self._hidden_obstacles = [
-            Coordinate(x=0, y=1),
-            Coordinate(x=1, y=1),
-            Coordinate(x=3, y=3),
-            Coordinate(x=4, y=3),
+            Coord(x=0, y=1),
+            Coord(x=1, y=1),
+            Coord(x=3, y=3),
+            Coord(x=4, y=3),
         ]
 
         self.actions = [
-            Coordinate(0, -1),
-            Coordinate(0, +1),
-            Coordinate(-1, 0),
-            Coordinate(+1, 0)
+            Coord(0, -1),
+            Coord(0, +1),
+            Coord(-1, 0),
+            Coord(+1, 0)
         ]
 
-        self.board = Coordinate(5, 5)
-        self._goal = Coordinate(4, 4)
-        self._initial_position = Coordinate(0, 0)
+        self.board = Coord(5, 5)
+        self._goal = Coord(4, 4)
+        self._initial_position = Coord(0, 0)
 
         self._position = None
 
@@ -71,7 +71,7 @@ class Game(GameInterface):
         '''Update player coordinates based on the action taken'''
         pos_x, pos_y = self._position
 
-        self._position = Coordinate(
+        self._position = Coord(
             bound(pos_x + encoded_action.x, low=0, high=self.board.x),
             bound(pos_y + encoded_action.y, low=0, high=self.board.y)
         )
